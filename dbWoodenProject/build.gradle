@@ -1,0 +1,76 @@
+import java.time.LocalDate
+import java.time.LocalDateTime
+
+plugins {
+	id 'org.springframework.boot' version '2.4.0'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+}
+
+group = 'WUT'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '15'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+compileJava{
+	options.compilerArgs << '-parameters'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+task generateDummyData(){
+	doLast {
+		File dataSql = file("src/main/resources/data.sql");
+		dataSql.write("");
+		//companies
+		for (int i = 0; i < 5; i++) {
+			dataSql.append("insert into company(id, company_name, city, country, nip) VALUES "
+					+ "('${i}', 'Test Comapany ${i}', 'Test City ${4-i}', 'Test Country ${i%2}', ${i}43216923);\n");
+		}
+
+		//invoices
+		for(int i = 0; i < 10; i++)
+		{
+			dataSql.append("insert into invoice(id, company_id, date_start, date_end, netto, brutto, tax) "
+			+ "values ('${i}', '${i%5}', '"+ LocalDateTime.now().minusDays(1000-i) +"', '"+ LocalDateTime.now().minusDays(100-i)+ "' , " +
+					" '${5000%(i+1) + i}', '${1.25*(5000%(i+1) + i)}', '0.25' );\n");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
