@@ -34,6 +34,12 @@ public class CompanyController {
         return companyService.getCompaniesWithInvoices(pageNumber, sortDirection);
     }
 
+    @GetMapping("/companies/invoicesasc/{id}")
+    public Company getCompanyWithSortedAscendingInvoices(@PathVariable("id") long id)
+    {
+        return companyService.getCompanyWithSortedASCInvoices(id);
+    }
+
     @GetMapping("/companies/{id}")
     public Company getCompany(@PathVariable("id") long id)
     {

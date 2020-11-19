@@ -43,6 +43,7 @@ public class CompanyService {
         List<Long> ids = allCompanies.stream()
                 .map(Company::getId)
                 .collect(Collectors.toList());
+        //List<Invoice> invoices = invoiceRepository.findAllByCompanyIdIn(ids);
         List<Invoice> invoices = invoiceRepository.findAllByCompanyIdIn(ids);
         allCompanies.forEach(company -> company.setInvoice(extractInvoices(invoices, company.getId())));
         return allCompanies;
@@ -52,6 +53,15 @@ public class CompanyService {
         return invoices.stream()
                 .filter(invoice -> invoice.getCompanyId() == id)
                 .collect(Collectors.toList());
+    }
+
+    public Company getCompanyWithSortedASCInvoices(long id)
+    {
+        Company company = companyRepository.findById(id).orElseThrow();
+        List<Invoice> invoices = invoiceRepository.findByCompanyIdOrderByDateStartAsc(id);
+
+        company.setInvoice(invoices);
+        return company;
     }
 
     public Company addCompany(Company company) {

@@ -123,4 +123,36 @@ insert into shipment(id, subunit_id, order_id, delivery_cost, delivery_type, del
 insert into shipment(id, subunit_id, order_id, delivery_cost, delivery_type, delivery_date) values ('17', '7', '17', '17', 'Registered', '2020-09-28');
 insert into shipment(id, subunit_id, order_id, delivery_cost, delivery_type, delivery_date) values ('18', '8', '18', '29', 'Priority', '2020-09-25');
 insert into shipment(id, subunit_id, order_id, delivery_cost, delivery_type, delivery_date) values ('19', '9', '19', '19', 'Registered', '2020-09-22');
+
+
+-- Creations of needed procedures
+CREATE PROCEDURE update_totals
+AS
+BEGIN
+	DECLARE @cId as FLOAT
+	DECLARE @corderId as INT = 0
+	DECLARE @msg varchar(max)
+	DECLARE @bc as CURSOR
+
+	SET @bc = CURSOR FOR
+	(SELECT (CAST(oi.Quantity AS float)* CAST(i.price as float)* CAST(c.currency as float))
+	FROM CORDER c
+	JOIN ORDERITEM oi ON (c.id = oi.order_id)
+	JOIN ITEM i ON (i.id = oi.item_id))
+
+	OPEN @bc
+		FETCH NEXT FROM @bc INTO @cId
+		WHILE @@FETCH_STATUS = 0
+			BEGIN
+				UPDATE CORDER
+				SET total_brutto = @cId
+				WHERE id = @corderId
+				print @cId
+
+				SET @corderId = @corderId + 1
+			FETCH NEXT FROM @bc INTO @cId
+	END
+END
+
+
 SET IDENTITY_INSERT COMPANY OFF
