@@ -15,9 +15,6 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(mappedBy = "item")
-    private OrderItem orderItem;
-
     @Column(name="name")
     private String Name;
 

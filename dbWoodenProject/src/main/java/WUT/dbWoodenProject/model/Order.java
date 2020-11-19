@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,5 +36,11 @@ public class Order {
 
     //@Column(name="orderItem")
     //List<OrderItem> orderItems;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    // @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id")
+    // @ElementCollection(targetClass = Integer.class)
+    @JoinColumn(name = "orderId", updatable = false, insertable = false)
+    private List<OrderItem> orderItems;
 
 }

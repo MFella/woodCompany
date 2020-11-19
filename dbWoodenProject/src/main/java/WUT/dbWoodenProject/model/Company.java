@@ -18,8 +18,6 @@ public class Company {
     private long id;
 
     @OneToMany(cascade = CascadeType.REMOVE)
-   // @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id")
-   // @ElementCollection(targetClass = Integer.class)
     @JoinColumn(name = "companyId", updatable = false, insertable = false)
     private List<Invoice> invoice;
 
@@ -34,16 +32,5 @@ public class Company {
 
     @Column(name = "nip", nullable = false)
     private String nip;
-
-//    public Company(String name, String city, String country, String nip)
-//    {
-//        this.name = name;
-//        this.city = city;
-//        this.country = country;
-//        this.nip = nip;
-//    }
-
-
-
 
 }

@@ -1,5 +1,4 @@
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 plugins {
 	id 'org.springframework.boot' version '2.4.0'
@@ -56,10 +55,71 @@ task generateDummyData(){
 		//invoices
 		for(int i = 0; i < 10; i++)
 		{
+			LocalDate dateOne = LocalDate.now().minusDays(9*i);
+			java.sql.Date sqlDate = java.sql.Date.valueOf(dateOne);
+			LocalDate dateTwo = LocalDate.now().minusDays(1000-i);
+			java.sql.Date sqlDateAnother = java.sql.Date.valueOf(dateTwo);
+
 			dataSql.append("insert into invoice(id, company_id, date_start, date_end, netto, brutto, tax) "
-			+ "values ('${i}', '${i%5}', '"+ LocalDateTime.now().minusDays(1000-i) +"', '"+ LocalDateTime.now().minusDays(100-i)+ "' , " +
+			+ "values ('${i}', '${i%5}', '"+ sqlDateAnother +"', '"+ sqlDate + "' , " +
 					" '${5000%(i+1) + i}', '${1.25*(5000%(i+1) + i)}', '0.25' );\n");
 		}
+		List<String> currList = Arrays.asList("EUR", "GBP", "PLN", "USD", "CHF");
+		List<String> valList = Arrays.asList("1.00", "0.89", "4.46", "1.18", "1.08");
+
+		//orders
+		for(int i = 0; i < 20; i++)
+		{
+			LocalDate dateOne = LocalDate.now().minusDays(9*i - 2);
+			java.sql.Date sqlDate = java.sql.Date.valueOf(dateOne);
+
+			dataSql.append("insert into corder(id, invoice_id, order_date, currency, currency_code, discount, " +
+					"total_brutto) values ('${i}', '${i%10}', '" + sqlDate + "',  " +
+					"'${valList[i%5]}', '${currList[i%5]}', '0', '1000');\n" );
+		}
+
+		//Items
+		for(int i = 0; i < 20; i++)
+		{
+			int number_in_stock = (int)(Math.random() * 1000) + 10;
+
+			dataSql.append("insert into item(id, name, description, price, number_in_stock)" +
+					" values ('${i}', 'Produkt Name ${i}', 'Dummy description ${i}', '${(i%20)+i*i}', '${number_in_stock}');\n");
+		}
+
+		//OrderItems
+		for(int i = 0; i < 40; i++)
+		{
+			dataSql.append("insert into orderitem(id, order_id, item_id, quantity) values " +
+					" ('${i}', '${i%20}', '${i%20}', '${i}');\n");
+		}
+
+		//Subunit
+		for(int i = 0; i < 10; i++)
+		{
+			List<String> cities = Arrays.asList("Warsaw", "Cracow", "Zielona Gora", "Gdansk", "Zakopane");
+			List<String> postcodes = Arrays.asList("00-003", "30-038", "65-031", "80-000", "34-505");
+
+
+			dataSql.append("insert into subunit(id, company_id, country, city, postcode, street) values " +
+					"('${i}', '${i%5}', 'Poland', '${cities[i%5]}', '${postcodes[i%5]}', 'Mickiewicza ${40 + i}');\n")
+		}
+
+		//Shipment
+		for(int i = 0; i < 20; i++)
+		{
+			LocalDate date = LocalDate.now().minusDays(3*i);
+			java.sql.Date newDate = java.sql.Date.valueOf(date);
+			List<String> dev_types = Arrays.asList("Economic", "Priority", "Registered", "Inpost", "PickUp")
+			int dev_cost = (int)(Math.random() * 20) + 10;
+			int rand = (int)(Math.random() * 4);
+
+			dataSql.append("insert into shipment(id, subunit_id, order_id, delivery_cost, delivery_type, delivery_date) " +
+					"values ('${i}', '${i%10}', '${i}', '${dev_cost}', '${dev_types[rand]}', '${newDate}');\n")
+		}
+
+
+		dataSql.append("SET IDENTITY_INSERT COMPANY OFF");
 	}
 }
 

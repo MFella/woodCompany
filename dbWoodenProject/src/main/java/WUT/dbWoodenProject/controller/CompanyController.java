@@ -22,7 +22,7 @@ public class CompanyController {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         //throw new IllegalArgumentException("Not implemented yet!");
-        return CompanyDtoMapper.mapToCompanyDtos(companyService.getCompanies(pageNumber, sortDirection));
+        return DtoMapper.mapToCompanyDtos(companyService.getCompanies(pageNumber, sortDirection));
     }
 
     @GetMapping("/companies/invoices")

@@ -15,7 +15,13 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private long orderId;
+
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    @Column(name="quantity")
+    private Integer Quantity;
+
 }
