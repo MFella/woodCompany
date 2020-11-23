@@ -32,5 +32,4 @@ public class Company {
 
     @Column(name = "nip", nullable = false)
     private String nip;
-
 }

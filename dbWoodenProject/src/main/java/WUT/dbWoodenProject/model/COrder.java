@@ -10,8 +10,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name="order")
-public class Order {
+@Table(name="COrder")
+public class COrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,11 @@ public class Order {
     //@Column(name="orderItem")
     //List<OrderItem> orderItems;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    //@OneToMany(cascade = CascadeType.REMOVE)
     // @JoinColumn(name = "invoice_id", referencedColumnName = "invoice_id")
     // @ElementCollection(targetClass = Integer.class)
+    //@JoinColumn(name = "orderId", updatable = false, insertable = false)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "orderId", updatable = false, insertable = false)
     private List<OrderItem> orderItems;
 

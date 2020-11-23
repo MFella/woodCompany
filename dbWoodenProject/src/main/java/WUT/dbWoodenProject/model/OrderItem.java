@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name="order_item")
+@Table(name="orderitem")
 public class OrderItem {
 
     @Id
@@ -18,7 +18,7 @@ public class OrderItem {
     private long orderId;
 
     @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "ItemId")
     private Item item;
 
     @Column(name="quantity")
