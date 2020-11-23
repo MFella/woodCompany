@@ -19,6 +19,10 @@ public class COrder {
 
     private long invoiceId;
 
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name="orderId", updatable = false, insertable = false)
+    private List<Shipment> shipment;
+
     @Column(name="order_date", nullable = false)
     private LocalDateTime OrderDate;
 

@@ -16,7 +16,7 @@ public class Shipment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="order_id")
+    //@Column(name="orderId")
     private long orderId;
 
     @Column(name="subunit_id")

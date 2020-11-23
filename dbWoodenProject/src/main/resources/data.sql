@@ -135,10 +135,11 @@ BEGIN
 	DECLARE @bc as CURSOR
 
 	SET @bc = CURSOR FOR
-	(SELECT (CAST(oi.Quantity AS float)* CAST(i.price as float)* CAST(c.currency as float))
+	SELECT (CAST(oi.Quantity AS float)* CAST(i.price as float)* CAST(c.currency as float) + CAST(s.delivery_cost as float))
 	FROM CORDER c
 	JOIN ORDERITEM oi ON (c.id = oi.order_id)
-	JOIN ITEM i ON (i.id = oi.item_id))
+	JOIN ITEM i ON (i.id = oi.item_id)
+	JOIN SHIPMENT s ON (s.order_id = c.id)
 
 	OPEN @bc
 		FETCH NEXT FROM @bc INTO @cId
@@ -156,3 +157,5 @@ END
 
 
 SET IDENTITY_INSERT COMPANY OFF
+
+EXEC update_totals
