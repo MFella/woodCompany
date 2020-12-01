@@ -1,11 +1,10 @@
 package WUT.dbWoodenProject.controller;
 
+import WUT.dbWoodenProject.controller.dto.COrderDto;
 import WUT.dbWoodenProject.model.COrder;
 import WUT.dbWoodenProject.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +31,11 @@ public class OrderController {
     {
         return orderService.findOrderById(id);
 
+    }
+
+    @PostMapping("/orders")
+    public COrder addOrder(@RequestBody COrderDto corderDto)
+    {
+        return orderService.save(corderDto);
     }
 }

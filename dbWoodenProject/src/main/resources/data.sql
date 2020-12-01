@@ -135,7 +135,7 @@ BEGIN
 	DECLARE @bc as CURSOR
 
 	SET @bc = CURSOR FOR
-	SELECT (CAST(oi.Quantity AS float)* CAST(i.price as float)* CAST(c.currency as float) + CAST(s.delivery_cost as float))
+	SELECT (CAST(oi.Quantity AS float)* CAST(i.price as float)* CAST(c.currency as float) * (100-CAST(c.discount AS FLOAT)) + CAST(s.delivery_cost as float))
 	FROM CORDER c
 	JOIN ORDERITEM oi ON (c.id = oi.order_id)
 	JOIN ITEM i ON (i.id = oi.item_id)
@@ -155,6 +155,16 @@ BEGIN
 	END
 END
 
+
+--CREATE PROCEDURE reduce_number_in_stock
+--AS
+--BEGIN
+--    DECLARE @c AS CURSOR
+--    DECLARE @nis AS INT
+--    DECLARE @ntr AS INT
+--
+--    SET @c = CURSOR FOR
+--    SELECT()
 
 SET IDENTITY_INSERT COMPANY OFF
 

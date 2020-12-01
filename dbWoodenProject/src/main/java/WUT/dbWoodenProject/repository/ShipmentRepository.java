@@ -16,4 +16,7 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     @Query("SELECT shipment FROM Shipment shipment WHERE shipment.subunitId = :subunitId")
     List<Shipment> findAllBySubunitId(@Param("subunitId") long subunitId);
+
+    @Query("SELECT shipment FROM Shipment shipment WHERE shipment.DeliveryType = :deltype")
+    List<Shipment> findAllByDeliveryType(@Param("deltype")String deltype);
 }

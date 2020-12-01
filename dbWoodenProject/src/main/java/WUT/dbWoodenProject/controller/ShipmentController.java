@@ -21,4 +21,10 @@ public class ShipmentController {
     {
         return shipmentService.findAllBySubunitId(id);
     }
+
+    @GetMapping("/shipments/{delType}")
+    public List<Shipment> findAllByDeliveryType(@PathVariable String delType)
+    {
+        return shipmentService.findAllByDeliveryType(delType);
+    }
 }
